@@ -8,8 +8,14 @@ class PostState extends Equatable {
 
   final List<Post> posts;
 
-  @override
-  List<Object?> get props => [];
-}
+  PostState copyWith({
+    List<Post>? posts,
+  }) {
+    return PostState(
+      posts: posts ?? this.posts,
+    );
+  }
 
-final class PostInitial extends PostState {}
+  @override
+  List<Object?> get props => [posts];
+}
