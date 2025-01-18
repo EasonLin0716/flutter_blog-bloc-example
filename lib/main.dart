@@ -58,9 +58,9 @@ class _MyHomePageState extends State<MyHomePage> {
             itemBuilder: (context, index) {
               final post = state.posts[index];
               return ListTile(
-                title: Text(post.title),
-                subtitle: Text(post.body),
-                trailing: Text('User ${post.userId}'),
+                title: Text(post.formattedTitle),
+                subtitle: Text(post.formattedBody),
+                trailing: Text('By ${post.username}'),
               );
             },
           );

@@ -11,7 +11,12 @@ class BlogRepository {
   final JsonPlaceholderApiClient _jsonPlaceholderApiClient;
 
   Future<List<Post>> getPosts() async {
+    String _getUserNameByUserId(int userId, List<User> users) {
+      final user = users.firstWhere((user) => user.id == userId);
+      return user.username;
+    }
     final posts = await _jsonPlaceholderApiClient.getPosts();
-    return posts.map((post) => Post(id: post.id, title: post.title, body: post.body, userId: post.userId)).toList();
+    final users = await _jsonPlaceholderApiClient.getUsers();
+    return posts.map((post) => Post(id: post.id, title: post.title, body: post.body, username: _getUserNameByUserId(post.userId, users))).toList();
   }
 }
