@@ -1,5 +1,5 @@
 import 'package:bloc/bloc.dart';
-import 'package:flutter_blog/post/post.dart';
+import 'package:flutter_blog/blog/post.dart';
 import 'package:blog_repository/blog_repository.dart' show BlogRepository;
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';

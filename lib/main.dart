@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:blog_repository/blog_repository.dart';
-import 'package:flutter_blog/post/post.dart';
+import 'package:flutter_blog/blog/post.dart';
 
 void main() {
   runApp(BlogApp(
