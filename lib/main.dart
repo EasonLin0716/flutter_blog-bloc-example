@@ -21,12 +21,12 @@ class BlogApp extends StatelessWidget {
     return BlocProvider(
       create: (_) => PostCubit(_blogRepository),
       child: MaterialApp(
-        title: 'Flutter Demo',
+        title: 'Flutter Blog',
         theme: ThemeData(
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.black),
           useMaterial3: true,
         ),
-        home: const MyHomePage(title: 'Flutter Blog'),
+        home: const MyHomePage(title: 'Blog'),
       ),
     );
   }
@@ -87,11 +87,11 @@ class _MyHomePageState extends State<MyHomePage> {
                 itemBuilder: (context, index) {
                   final post = state.posts[index];
                   return ListTile(
-                    title: Text(post.formattedTitle),
+                    title: Text(post.title),
                     subtitle: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(post.formattedBody),
+                        Text(post.body),
                         Text('By ${post.username}',
                             style: TextStyle(fontWeight: FontWeight.bold)),
                       ],

@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
-import 'package:blog_repository/blog_repository.dart' show Post, BlogRepository;
+import 'package:flutter_blog/post/post.dart';
+import 'package:blog_repository/blog_repository.dart' show BlogRepository;
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -10,7 +11,7 @@ class PostCubit extends Cubit<PostState> {
   PostCubit(this._blogRepository) : super(PostState());
   final BlogRepository _blogRepository;
   Future<void> getPosts(keyword) async {
-    final posts = await _blogRepository.getPosts(keyword);
+    final posts = (await _blogRepository.getPosts(keyword)).map((post) => Post.fromRepository(post)).toList();
     emit(state.copyWith(posts: posts));
   }
 }
