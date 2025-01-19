@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_blog/blog/post.dart';
+import 'package:flutter_blog/blog/view/blog_page.dart';
 
 class BlogsPage extends StatefulWidget {
   const BlogsPage({super.key, required this.title});
@@ -82,6 +83,11 @@ class _BlogsPageState extends State<BlogsPage> {
         ],
       ),
       isThreeLine: true,
+      onTap: () {
+        // print(post.id);
+        final postId = post.id;
+        Navigator.of(context).push<void>(BlogPage.route(postId));
+      },
     );
   }
 }
