@@ -32,6 +32,21 @@ class JsonPlaceholderApiClient {
     return postJson.map((json) => Post.fromJson(json)).toList();
   }
 
+
+  /// Get a [Post] by [id] /posts/:id
+  Future<Post> getPost(int id) async {
+    final postRequest = Uri.https(_baseUrl, '/posts/$id');
+
+    final postResponse = await _httpClient.get(postRequest);
+
+    if (postResponse.statusCode != 200) {
+      throw PostsFetchFailureException();
+    }
+
+    final postJson = jsonDecode(postResponse.body);
+    return Post.fromJson(postJson);
+  }
+
   /// Gets a list of [User] /users
   Future<List<User>> getUsers() async {
     final userRequest = Uri.https(_baseUrl, '/users');
@@ -44,5 +59,18 @@ class JsonPlaceholderApiClient {
 
     final userJson = jsonDecode(userResponse.body) as List;
     return userJson.map((json) => User.fromJson(json)).toList();
+  }
+
+  Future<User> getUser(int id) async {
+    final userRequest = Uri.https(_baseUrl, '/users/$id');
+
+    final userResponse = await _httpClient.get(userRequest);
+
+    if (userResponse.statusCode != 200) {
+      throw UsersFetchFailureException();
+    }
+
+    final userJson = jsonDecode(userResponse.body);
+    return User.fromJson(userJson);
   }
 }

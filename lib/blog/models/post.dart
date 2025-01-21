@@ -31,6 +31,8 @@ class Post {
       username: post.username,
     );
   }
+  
+  static const Empty = Post(id: 0, title: '', body: '', username: '');
 
   Map<String, dynamic> toJson() => _$PostToJson(this);
 

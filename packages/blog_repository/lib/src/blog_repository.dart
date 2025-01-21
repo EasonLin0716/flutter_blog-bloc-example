@@ -37,4 +37,14 @@ class BlogRepository {
     }
     return _getFilteredPosts(keyword ?? '');
   }
+
+  Future<Post> getPost(int id) async {
+    final postData = await _jsonPlaceholderApiClient.getPost(id);
+    final usersData = await _jsonPlaceholderApiClient.getUser(postData.userId);
+    return Post(
+        id: postData.id,
+        title: postData.title,
+        body: postData.body,
+        username: usersData.username);
+  }
 }

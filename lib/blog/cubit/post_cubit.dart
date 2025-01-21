@@ -14,4 +14,8 @@ class PostCubit extends Cubit<PostState> {
     final posts = (await _blogRepository.getPosts(keyword)).map((post) => Post.fromRepository(post)).toList();
     emit(state.copyWith(posts: posts));
   }
+  Future<void> getPost(int id) async {
+    final postDetail = Post.fromRepository(await _blogRepository.getPost(id));
+    emit(state.copyWith(postDetail: postDetail));
+  }
 }
