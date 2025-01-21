@@ -30,12 +30,30 @@ class _BlogPageState extends State<BlogPage> {
       body: Center(
         child: BlocBuilder<PostCubit, PostState>(
           builder: (context, state) {
-            return Column(
-              children: [
-                Text(state.postDetail.title),
-                Text(state.postDetail.body),
-                Text(state.postDetail.username),
-              ],
+            if (state.postDetail.title == '') {
+              return CircularProgressIndicator();
+            }
+            return Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    state.postDetail.title,
+                    style: Theme.of(context).textTheme.titleMedium,
+                  ),
+                  SizedBox(height: 8),
+                  Text(
+                    state.postDetail.body,
+                    style: Theme.of(context).textTheme.bodyMedium,
+                  ),
+                  SizedBox(height: 8),
+                  Text(
+                    'By: ${state.postDetail.username}',
+                    style: Theme.of(context).textTheme.labelMedium,
+                  ),
+                ],
+              ),
             );
           },
         ),
