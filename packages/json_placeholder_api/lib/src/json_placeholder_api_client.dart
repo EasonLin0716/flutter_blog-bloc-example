@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 import 'package:json_placeholder_api/json_placeholder_api.dart';
+import 'package:json_placeholder_api/src/models/comment.dart';
 import 'package:json_placeholder_api/src/models/user.dart';
 
 /// Exception thrown when fetching posts fails
@@ -61,6 +62,7 @@ class JsonPlaceholderApiClient {
     return userJson.map((json) => User.fromJson(json)).toList();
   }
 
+  /// Get a [User] by [id] /users/:id
   Future<User> getUser(int id) async {
     final userRequest = Uri.https(_baseUrl, '/users/$id');
 
@@ -72,5 +74,19 @@ class JsonPlaceholderApiClient {
 
     final userJson = jsonDecode(userResponse.body);
     return User.fromJson(userJson);
+  }
+
+  /// Get a list of [Comment] by [postId] /comments?postId=:postId
+  Future<List<Comment>> getCommentsByPostId(int postId) async {
+    final commentRequest = Uri.https(_baseUrl, '/comments', {'postId': '$postId'});
+
+    final commentResponse = await _httpClient.get(commentRequest);
+
+    if (commentResponse.statusCode != 200) {
+      throw UsersFetchFailureException();
+    }
+
+    final commentJson = jsonDecode(commentResponse.body) as List;
+    return commentJson.map((json) => Comment.fromJson(json)).toList();
   }
 }

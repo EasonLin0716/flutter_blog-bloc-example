@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:blog_repository/src/models/comment.dart';
 import 'package:json_placeholder_api/json_placeholder_api.dart' hide Post;
 import 'package:blog_repository/blog_repository.dart';
 
@@ -46,5 +47,16 @@ class BlogRepository {
         title: postData.title,
         body: postData.body,
         username: usersData.username);
+  }
+
+  Future<List<Comment>> getCommentsByPostId(int postId) async {
+    final commentsData = await _jsonPlaceholderApiClient.getCommentsByPostId(postId);
+    return commentsData
+        .map((comment) => Comment(
+            id: comment.id,
+            name: comment.name,
+            email: comment.email,
+            body: comment.body))
+        .toList();
   }
 }

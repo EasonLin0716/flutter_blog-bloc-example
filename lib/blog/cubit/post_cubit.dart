@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:flutter_blog/blog/models/comment.dart';
 import 'package:flutter_blog/blog/post.dart';
 import 'package:blog_repository/blog_repository.dart' show BlogRepository;
 import 'package:equatable/equatable.dart';
@@ -17,5 +18,9 @@ class PostCubit extends Cubit<PostState> {
   Future<void> getPost(int id) async {
     final postDetail = Post.fromRepository(await _blogRepository.getPost(id));
     emit(state.copyWith(postDetail: postDetail));
+  }
+  Future<void> getCommentsByPostId(int postId) async {
+    final comments = (await _blogRepository.getCommentsByPostId(postId)).map((comment) => Comment.fromRepository(comment)).toList();
+    emit(state.copyWith(comments: comments));
   }
 }
