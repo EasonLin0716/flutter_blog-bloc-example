@@ -53,9 +53,16 @@ class _BlogPageState extends State<BlogPage> {
                         style: Theme.of(context).textTheme.bodyMedium,
                       ),
                       SizedBox(height: 8),
-                      Text(
-                        'By: ${state.postDetail.username}',
-                        style: Theme.of(context).textTheme.labelMedium,
+                      Row(
+                        children: [
+                          Text(
+                            'By: ${state.postDetail.username}',
+                            style: Theme.of(context).textTheme.labelMedium,
+                          ),
+                          SizedBox(width: 8),
+                          CircleAvatar(
+                              backgroundImage: AssetImage(state.postDetail.avatar))
+                        ],
                       ),
                       SizedBox(height: 16),
                       Text(

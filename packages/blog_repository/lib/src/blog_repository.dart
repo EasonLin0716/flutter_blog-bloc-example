@@ -15,6 +15,11 @@ class BlogRepository {
     return user.username;
   }
 
+  String _getUserAvatarByUserId(int userId, List<User> users) {
+    final user = users.firstWhere((user) => user.id == userId);
+    return user.avatar;
+  }
+
   List<Post> _posts = [];
   List<Post> _getFilteredPosts(String keyword) {
     return _posts
@@ -28,12 +33,14 @@ class BlogRepository {
     if (_posts.isEmpty) {
       final postsData = await _jsonPlaceholderApiClient.getPosts();
       final usersData = await _jsonPlaceholderApiClient.getUsers();
+      postsData.shuffle();
       _posts = postsData
           .map((post) => Post(
               id: post.id,
               title: post.title,
               body: post.body,
-              username: _getUserNameByUserId(post.userId, usersData)))
+              username: _getUserNameByUserId(post.userId, usersData),
+              avatar: _getUserAvatarByUserId(post.userId, usersData)))
           .toList();
     }
     return _getFilteredPosts(keyword ?? '');
@@ -46,11 +53,13 @@ class BlogRepository {
         id: postData.id,
         title: postData.title,
         body: postData.body,
-        username: usersData.username);
+        username: usersData.username,
+        avatar: usersData.avatar);
   }
 
   Future<List<Comment>> getCommentsByPostId(int postId) async {
-    final commentsData = await _jsonPlaceholderApiClient.getCommentsByPostId(postId);
+    final commentsData =
+        await _jsonPlaceholderApiClient.getCommentsByPostId(postId);
     return commentsData
         .map((comment) => Comment(
             id: comment.id,

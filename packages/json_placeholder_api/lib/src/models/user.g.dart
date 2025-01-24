@@ -16,6 +16,7 @@ User _$UserFromJson(Map<String, dynamic> json) => $checkedCreate(
           id: $checkedConvert('id', (v) => (v as num).toInt()),
           name: $checkedConvert('name', (v) => v as String),
           username: $checkedConvert('username', (v) => v as String),
+          avatar: $checkedConvert('avatar', (v) => v as String),
           email: $checkedConvert('email', (v) => v as String),
           address: $checkedConvert(
               'address', (v) => Address.fromJson(v as Map<String, dynamic>)),

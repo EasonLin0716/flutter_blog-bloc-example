@@ -20,6 +20,7 @@ class Post {
     required this.title,
     required this.body,
     required this.username,
+    required this.avatar,
   });
 
   factory Post.fromJson(Map<String, dynamic> json) => _$PostFromJson(json);
@@ -29,10 +30,11 @@ class Post {
       title: _formatByMaxLength(post.title, 50),
       body: _formatByMaxLength(post.body, 100),
       username: post.username,
+      avatar: post.avatar,
     );
   }
   
-  static const Empty = Post(id: 0, title: '', body: '', username: '');
+  static const Empty = Post(id: 0, title: '', body: '', username: '', avatar: '');
 
   Map<String, dynamic> toJson() => _$PostToJson(this);
 
@@ -40,4 +42,5 @@ class Post {
   final String title;
   final String body;
   final String username;
+  final String avatar;
 }
