@@ -31,18 +31,21 @@ class _BlogPageState extends State<BlogPage> {
       body: Center(
         child: BlocBuilder<PostCubit, PostState>(
           builder: (context, state) {
-            if (state.postDetail.title == '') {
+            if (state.postStatus == PostStatus.loading) {
               return CircularProgressIndicator();
             }
             return Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  PostDetail(postDetail: state.postDetail, comments: state.comments),
-                ],
-              ),
-            );
+                padding: const EdgeInsets.all(16.0),
+                child: SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      _PostDetail(
+                          postDetail: state.postDetail,
+                          comments: state.comments),
+                    ],
+                  ),
+                ));
           },
         ),
       ),
@@ -50,8 +53,8 @@ class _BlogPageState extends State<BlogPage> {
   }
 }
 
-class PostDetail extends StatelessWidget {
-  const PostDetail({
+class _PostDetail extends StatelessWidget {
+  const _PostDetail({
     required this.postDetail,
     required this.comments,
     super.key,
@@ -62,65 +65,63 @@ class PostDetail extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-        child: Column(
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
           postDetail.title,
           style: Theme.of(context).textTheme.titleMedium,
         ),
-        SizedBox(height: 8),
+        const SizedBox(height: 8),
         Text(
           postDetail.body,
           style: Theme.of(context).textTheme.bodyMedium,
         ),
-        SizedBox(height: 8),
+        const SizedBox(height: 8),
         Row(
           children: [
             Text(
               'By: ${postDetail.username}',
               style: Theme.of(context).textTheme.labelMedium,
             ),
-            SizedBox(width: 8),
-            CircleAvatar(
-                backgroundImage: AssetImage(postDetail.avatar))
+            const SizedBox(width: 8),
+            CircleAvatar(backgroundImage: AssetImage(postDetail.avatar))
           ],
         ),
-        SizedBox(height: 16),
+        const SizedBox(height: 16),
         Text(
           'Comments',
           style: Theme.of(context).textTheme.titleMedium,
         ),
-        Expanded(
-          child: ListView.builder(
-            shrinkWrap: true,
-            itemCount: comments.length,
-            itemBuilder: (context, index) {
-              final comment = comments[index];
-              return Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    comment.name,
-                    style:
-                        Theme.of(context).textTheme.labelMedium,
-                  ),
-                  Text(
-                    comment.body,
-                    style: Theme.of(context).textTheme.bodyMedium,
-                  ),
-                  Text(
-                    'By: ${comment.email}',
-                    style:
-                        Theme.of(context).textTheme.labelMedium,
-                  ),
-                  SizedBox(height: 8),
-                ],
-              );
-            },
-          ),
-        )
+        const SizedBox(height: 8),
+        ListView.builder(
+          shrinkWrap: true, // 讓 ListView 只佔用必要的空間
+          physics:
+              const NeverScrollableScrollPhysics(), // 停用 ListView 自己的滾動，交給外層的 `SingleChildScrollView`
+          itemCount: comments.length,
+          itemBuilder: (context, index) {
+            final comment = comments[index];
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  comment.name,
+                  style: Theme.of(context).textTheme.labelMedium,
+                ),
+                Text(
+                  comment.body,
+                  style: Theme.of(context).textTheme.bodyMedium,
+                ),
+                Text(
+                  'By: ${comment.email}',
+                  style: Theme.of(context).textTheme.labelMedium,
+                ),
+                const SizedBox(height: 8),
+              ],
+            );
+          },
+        ),
       ],
-    ));
+    );
   }
 }

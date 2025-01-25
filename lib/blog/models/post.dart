@@ -1,10 +1,7 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:blog_repository/blog_repository.dart' hide Post;
-import 'package:blog_repository/blog_repository.dart'
-    as blog_repository;
+import 'package:blog_repository/blog_repository.dart' as blog_repository;
 
 part 'post.g.dart';
-
 
 String _formatByMaxLength(String data, int maxLength) {
   if (data.length > maxLength) {
@@ -15,6 +12,9 @@ String _formatByMaxLength(String data, int maxLength) {
 
 @JsonSerializable()
 class Post {
+  static const int titleMaxLength = 32;
+  static const int bodyMaxLength = 100;
+
   const Post({
     required this.id,
     required this.title,
@@ -23,18 +23,30 @@ class Post {
     required this.avatar,
   });
 
-  factory Post.fromJson(Map<String, dynamic> json) => _$PostFromJson(json);
-  factory Post.fromRepository(blog_repository.Post post) {
+  factory Post.forList(Post post) {
     return Post(
       id: post.id,
-      title: _formatByMaxLength(post.title, 50),
-      body: _formatByMaxLength(post.body, 100),
+      title: _formatByMaxLength(post.title, titleMaxLength),
+      body: _formatByMaxLength(post.body, bodyMaxLength),
       username: post.username,
       avatar: post.avatar,
     );
   }
-  
-  static const Empty = Post(id: 0, title: '', body: '', username: '', avatar: '');
+
+  factory Post.fromJson(Map<String, dynamic> json) => _$PostFromJson(json);
+
+  factory Post.fromRepository(blog_repository.Post post) {
+    return Post(
+      id: post.id,
+      title: post.title,
+      body: post.body,
+      username: post.username,
+      avatar: post.avatar,
+    );
+  }
+
+  static const Empty =
+      Post(id: 0, title: '', body: '', username: '', avatar: '');
 
   Map<String, dynamic> toJson() => _$PostToJson(this);
 

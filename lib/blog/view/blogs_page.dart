@@ -39,19 +39,23 @@ class _BlogsPageState extends State<BlogsPage> {
                   Expanded(
                     child: Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 8),
-                        child: _SearchFIeld(context)),
+                        child: _SearchFiled(context)),
                   ),
                 ],
               ),
               SizedBox(height: 8),
               Expanded(
-                  child: ListView.builder(
-                itemCount: state.posts.length,
-                itemBuilder: (context, index) {
-                  final post = state.posts[index];
-                  return _BlogsList(post);
-                },
-              ))
+                child: state.posts.isEmpty
+                    ? const Center(
+                        child: CircularProgressIndicator()) // 顯示 Loading 指示器
+                    : ListView.builder(
+                        itemCount: state.posts.length,
+                        itemBuilder: (context, index) {
+                          final post = state.posts[index];
+                          return _BlogsList(post);
+                        },
+                      ),
+              )
             ],
           );
         },
@@ -59,7 +63,7 @@ class _BlogsPageState extends State<BlogsPage> {
     );
   }
 
-  TextField _SearchFIeld(BuildContext context) {
+  TextField _SearchFiled(BuildContext context) {
     return TextField(
       controller: _textController,
       decoration:

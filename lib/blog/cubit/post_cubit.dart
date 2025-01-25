@@ -14,18 +14,26 @@ class PostCubit extends Cubit<PostState> {
   void setPostStatus(PostStatus status) async {
     emit(state.copyWith(postStatus: status));
   }
-  Future<void> getPosts(keyword) async {
-    final posts = (await _blogRepository.getPosts(keyword)).map((post) => Post.fromRepository(post)).toList();
+
+  Future<void> getPosts(String keyword) async {
+    final posts = (await _blogRepository.getPosts(keyword))
+        .map((post) => Post.forList(Post.fromRepository(post)))
+        .toList();
     emit(state.copyWith(posts: posts));
   }
+
   Future<void> getPost(int id) async {
     final postDetail = Post.fromRepository(await _blogRepository.getPost(id));
     emit(state.copyWith(postDetail: postDetail));
   }
+
   Future<void> getCommentsByPostId(int postId) async {
-    final comments = (await _blogRepository.getCommentsByPostId(postId)).map((comment) => Comment.fromRepository(comment)).toList();
+    final comments = (await _blogRepository.getCommentsByPostId(postId))
+        .map((comment) => Comment.fromRepository(comment))
+        .toList();
     emit(state.copyWith(comments: comments));
   }
+
   Future<void> getPostDetail(int postId) async {
     if (state.postDetail.id == postId) return;
     setPostStatus(PostStatus.loading);
