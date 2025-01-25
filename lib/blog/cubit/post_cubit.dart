@@ -11,15 +11,17 @@ part 'post_state.dart';
 class PostCubit extends Cubit<PostState> {
   PostCubit(this._blogRepository) : super(PostState());
   final BlogRepository _blogRepository;
-  void setPostStatus(PostStatus status) async {
+  void setPostStatus(Status status) async {
     emit(state.copyWith(postStatus: status));
   }
 
   Future<void> getPosts(String keyword) async {
+    emit(state.copyWith(postsStatus: Status.loading));
     final posts = (await _blogRepository.getPosts(keyword))
         .map((post) => Post.forList(Post.fromRepository(post)))
         .toList();
     emit(state.copyWith(posts: posts));
+    emit(state.copyWith(postsStatus: Status.success));
   }
 
   Future<void> getPost(int id) async {
@@ -36,11 +38,11 @@ class PostCubit extends Cubit<PostState> {
 
   Future<void> getPostDetail(int postId) async {
     if (state.postDetail.id == postId) return;
-    setPostStatus(PostStatus.loading);
+    setPostStatus(Status.loading);
     emit(state.copyWith(postDetail: Post.Empty));
     emit(state.copyWith(comments: []));
     await getPost(postId);
     await getCommentsByPostId(postId);
-    setPostStatus(PostStatus.success);
+    setPostStatus(Status.success);
   }
 }

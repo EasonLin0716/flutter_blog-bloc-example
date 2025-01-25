@@ -31,7 +31,7 @@ class _BlogPageState extends State<BlogPage> {
       body: Center(
         child: BlocBuilder<PostCubit, PostState>(
           builder: (context, state) {
-            if (state.postStatus == PostStatus.loading) {
+            if (state.postStatus == Status.loading) {
               return CircularProgressIndicator();
             }
             return Padding(

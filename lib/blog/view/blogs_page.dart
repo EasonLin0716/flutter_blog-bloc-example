@@ -39,22 +39,15 @@ class _BlogsPageState extends State<BlogsPage> {
                   Expanded(
                     child: Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 8),
-                        child: _SearchFiled(context)),
+                        child: _SearchField(context)),
                   ),
                 ],
               ),
               SizedBox(height: 8),
               Expanded(
-                child: state.posts.isEmpty
-                    ? const Center(
-                        child: CircularProgressIndicator()) // 顯示 Loading 指示器
-                    : ListView.builder(
-                        itemCount: state.posts.length,
-                        itemBuilder: (context, index) {
-                          final post = state.posts[index];
-                          return _BlogsList(post);
-                        },
-                      ),
+                child: state.postsStatus == Status.loading
+                    ? const Center(child: CircularProgressIndicator())
+                    : _PostsList(state.posts),
               )
             ],
           );
@@ -63,35 +56,51 @@ class _BlogsPageState extends State<BlogsPage> {
     );
   }
 
-  TextField _SearchFiled(BuildContext context) {
+  TextField _SearchField(BuildContext context) {
     return TextField(
       controller: _textController,
-      decoration:
-          const InputDecoration(labelText: 'Post', hintText: 'Search any post'),
+      decoration: InputDecoration(
+        labelText: 'Post',
+        hintText: 'Search any post',
+        suffixIcon: _textController.text.isNotEmpty
+            ? IconButton(
+                icon: const Icon(Icons.clear),
+                onPressed: () {
+                  _textController.clear();
+                  context.read<PostCubit>().getPosts('');
+                },
+              )
+            : null,
+      ),
       onSubmitted: (_) {
-        print('_text: $_text');
-        context.read<PostCubit>().getPosts(_text);
+        context.read<PostCubit>().getPosts(_textController.text);
       },
     );
   }
 
-  ListTile _BlogsList(Post post) {
-    return ListTile(
-      title: Text(post.title),
-      subtitle: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(post.body),
-          Text('By ${post.username}',
-              style: TextStyle(fontWeight: FontWeight.bold)),
-        ],
-      ),
-      isThreeLine: true,
-      onTap: () {
-        // print(post.id);
-        final postId = post.id;
-        Navigator.of(context).push<void>(BlogPage.route(postId));
-      },
-    );
+  Widget _PostsList(List<Post> posts) {
+    if (posts.isEmpty) {
+      return Center(child: Text('No post found'));
+    }
+    return ListView.builder(itemBuilder: (context, index) {
+      final post = posts[index];
+      return ListTile(
+        title: Text(post.title),
+        subtitle: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(post.body),
+            Text('By ${post.username}',
+                style: TextStyle(fontWeight: FontWeight.bold)),
+          ],
+        ),
+        isThreeLine: true,
+        onTap: () {
+          // print(post.id);
+          final postId = post.id;
+          Navigator.of(context).push<void>(BlogPage.route(postId));
+        },
+      );
+    });
   }
 }

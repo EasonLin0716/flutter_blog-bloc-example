@@ -1,12 +1,12 @@
 part of 'post_cubit.dart';
 
-enum PostStatus { initial, loading, success, failure }
+enum Status { initial, loading, success, failure }
 
-extension PostStatusX on PostStatus {
-  bool get isInitial => this == PostStatus.initial;
-  bool get isLoading => this == PostStatus.loading;
-  bool get isSuccess => this == PostStatus.success;
-  bool get isFailure => this == PostStatus.failure;
+extension StatusX on Status {
+  bool get isInitial => this == Status.initial;
+  bool get isLoading => this == Status.loading;
+  bool get isSuccess => this == Status.success;
+  bool get isFailure => this == Status.failure;
 }
 
 @JsonSerializable()
@@ -15,28 +15,32 @@ class PostState extends Equatable {
     this.posts = const [],
     this.postDetail = Post.Empty,
     this.comments = const [],
-    this.postStatus = PostStatus.initial,
+    this.postStatus = Status.initial,
+    this.postsStatus = Status.initial,
   });
 
   final List<Post> posts;
   final Post postDetail;
   final List<Comment> comments;
-  final PostStatus postStatus;
+  final Status postStatus;
+  final Status postsStatus;
 
   PostState copyWith({
     List<Post>? posts,
     Post? postDetail,
     List<Comment>? comments,
-    PostStatus? postStatus,
+    Status? postStatus,
+    Status? postsStatus,
   }) {
     return PostState(
       posts: posts ?? this.posts,
       postDetail: postDetail ?? this.postDetail,
       comments: comments ?? this.comments,
       postStatus: postStatus ?? this.postStatus,
+      postsStatus: postsStatus ?? this.postsStatus,
     );
   }
 
   @override
-  List<Object?> get props => [posts, postDetail, comments, postStatus];
+  List<Object?> get props => [posts, postDetail, comments, postStatus, postsStatus];
 }
