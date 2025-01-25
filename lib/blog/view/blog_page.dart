@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_blog/blog/post.dart';
@@ -67,33 +68,38 @@ class _PostDetail extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
+      spacing: 8,
       children: [
         Text(
           postDetail.title,
-          style: Theme.of(context).textTheme.titleMedium,
+          style: Theme.of(context).textTheme.titleLarge,
         ),
-        const SizedBox(height: 8),
+        Row(
+          spacing: 8,
+          children: [
+            CircleAvatar(backgroundImage: AssetImage(postDetail.avatar)),
+            Text(
+              postDetail.username,
+              style: Theme.of(context).textTheme.labelMedium,
+            ),
+          ],
+        ),
+        Center(
+          child: CachedNetworkImage(
+            imageUrl: postDetail.cover,
+            placeholder: (context, url) => CircularProgressIndicator(),
+            errorWidget: (context, url, error) => Icon(Icons.error),
+          ),
+        ),
         Text(
           postDetail.body,
           style: Theme.of(context).textTheme.bodyMedium,
         ),
-        const SizedBox(height: 8),
-        Row(
-          children: [
-            Text(
-              'By: ${postDetail.username}',
-              style: Theme.of(context).textTheme.labelMedium,
-            ),
-            const SizedBox(width: 8),
-            CircleAvatar(backgroundImage: AssetImage(postDetail.avatar))
-          ],
-        ),
-        const SizedBox(height: 16),
+        Divider(),
         Text(
           'Comments',
-          style: Theme.of(context).textTheme.titleMedium,
+          style: Theme.of(context).textTheme.titleLarge,
         ),
-        const SizedBox(height: 8),
         ListView.builder(
           shrinkWrap: true, // 讓 ListView 只佔用必要的空間
           physics:
@@ -103,10 +109,11 @@ class _PostDetail extends StatelessWidget {
             final comment = comments[index];
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
+              spacing: 8,
               children: [
                 Text(
                   comment.name,
-                  style: Theme.of(context).textTheme.labelMedium,
+                  style: Theme.of(context).textTheme.titleSmall,
                 ),
                 Text(
                   comment.body,
@@ -116,7 +123,7 @@ class _PostDetail extends StatelessWidget {
                   'By: ${comment.email}',
                   style: Theme.of(context).textTheme.labelMedium,
                 ),
-                const SizedBox(height: 8),
+                const Divider(),
               ],
             );
           },

@@ -17,6 +17,7 @@ Post _$PostFromJson(Map<String, dynamic> json) => $checkedCreate(
           id: $checkedConvert('id', (v) => (v as num).toInt()),
           title: $checkedConvert('title', (v) => v as String),
           body: $checkedConvert('body', (v) => v as String),
+          cover: $checkedConvert('cover', (v) => v as String),
         );
         return val;
       },

@@ -39,6 +39,7 @@ class BlogRepository {
               id: post.id,
               title: post.title,
               body: post.body,
+              cover: post.cover,
               username: _getUserNameByUserId(post.userId, usersData),
               avatar: _getUserAvatarByUserId(post.userId, usersData)))
           .toList();
@@ -54,7 +55,8 @@ class BlogRepository {
         title: postData.title,
         body: postData.body,
         username: usersData.username,
-        avatar: usersData.avatar);
+        avatar: usersData.avatar,
+        cover: postData.cover);
   }
 
   Future<List<Comment>> getCommentsByPostId(int postId) async {

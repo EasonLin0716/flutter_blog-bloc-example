@@ -16,6 +16,7 @@ Post _$PostFromJson(Map<String, dynamic> json) => $checkedCreate(
           body: $checkedConvert('body', (v) => v as String),
           username: $checkedConvert('username', (v) => v as String),
           avatar: $checkedConvert('avatar', (v) => v as String),
+          cover: $checkedConvert('cover', (v) => v as String),
         );
         return val;
       },
@@ -27,4 +28,5 @@ Map<String, dynamic> _$PostToJson(Post instance) => <String, dynamic>{
       'body': instance.body,
       'username': instance.username,
       'avatar': instance.avatar,
+      'cover': instance.cover,
     };

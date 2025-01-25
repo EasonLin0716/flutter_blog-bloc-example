@@ -17,12 +17,16 @@ class Post {
     required this.id,
     required this.title,
     required this.body,
+    required this.cover,
   });
 
   final int userId;
   final int id;
   final String title;
   final String body;
+  final String cover;
+
+  static const _imgUrl = 'https://picsum.photos/id/';
 
   factory Post.fromJson(Map<String, dynamic> json) {
     return Post(
@@ -30,6 +34,7 @@ class Post {
       id: json['id'] as int,
       title: json['title'] as String,
       body: json['body'] as String,
+      cover: '${_imgUrl}${json['id']}/400/240',
     );
   }
 }

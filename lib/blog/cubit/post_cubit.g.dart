@@ -30,14 +30,31 @@ PostState _$PostStateFromJson(Map<String, dynamic> json) => $checkedCreate(
                       ?.map((e) => Comment.fromJson(e as Map<String, dynamic>))
                       .toList() ??
                   const []),
+          postStatus: $checkedConvert('post_status',
+              (v) => $enumDecodeNullable(_$StatusEnumMap, v) ?? Status.initial),
+          postsStatus: $checkedConvert('posts_status',
+              (v) => $enumDecodeNullable(_$StatusEnumMap, v) ?? Status.initial),
         );
         return val;
       },
-      fieldKeyMap: const {'postDetail': 'post_detail'},
+      fieldKeyMap: const {
+        'postDetail': 'post_detail',
+        'postStatus': 'post_status',
+        'postsStatus': 'posts_status'
+      },
     );
 
 Map<String, dynamic> _$PostStateToJson(PostState instance) => <String, dynamic>{
       'posts': instance.posts.map((e) => e.toJson()).toList(),
       'post_detail': instance.postDetail.toJson(),
       'comments': instance.comments.map((e) => e.toJson()).toList(),
+      'post_status': _$StatusEnumMap[instance.postStatus]!,
+      'posts_status': _$StatusEnumMap[instance.postsStatus]!,
     };
+
+const _$StatusEnumMap = {
+  Status.initial: 'initial',
+  Status.loading: 'loading',
+  Status.success: 'success',
+  Status.failure: 'failure',
+};

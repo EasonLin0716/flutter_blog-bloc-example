@@ -21,6 +21,7 @@ class Post {
     required this.body,
     required this.username,
     required this.avatar,
+    required this.cover,
   });
 
   factory Post.forList(Post post) {
@@ -30,6 +31,7 @@ class Post {
       body: _formatByMaxLength(post.body, bodyMaxLength),
       username: post.username,
       avatar: post.avatar,
+      cover: post.cover,
     );
   }
 
@@ -42,11 +44,12 @@ class Post {
       body: post.body,
       username: post.username,
       avatar: post.avatar,
+      cover: post.cover,
     );
   }
 
   static const Empty =
-      Post(id: 0, title: '', body: '', username: '', avatar: '');
+      Post(id: 0, title: '', body: '', username: '', avatar: '', cover: '');
 
   Map<String, dynamic> toJson() => _$PostToJson(this);
 
@@ -55,4 +58,5 @@ class Post {
   final String body;
   final String username;
   final String avatar;
+  final String cover;
 }

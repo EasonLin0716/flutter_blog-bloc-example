@@ -11,6 +11,7 @@ class Post extends Equatable {
     required this.body,
     required this.username,
     required this.avatar,
+    required this.cover,
   });
 
   factory Post.fromJson(Map<String, dynamic> json) => _$PostFromJson(json);
@@ -22,7 +23,8 @@ class Post extends Equatable {
   final String body;
   final String username;
   final String avatar;
+  final String cover;
 
   @override
-  List<Object> get props => [id, title, body, username, avatar];
+  List<Object> get props => [id, title, body, username, avatar, cover];
 }
