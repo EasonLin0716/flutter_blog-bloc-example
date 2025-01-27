@@ -95,7 +95,7 @@ class _PostDetail extends StatelessWidget {
           postDetail.body,
           style: Theme.of(context).textTheme.bodyMedium,
         ),
-        Divider(),
+        const SizedBox(height: 8),
         Text(
           'Comments',
           style: Theme.of(context).textTheme.titleLarge,

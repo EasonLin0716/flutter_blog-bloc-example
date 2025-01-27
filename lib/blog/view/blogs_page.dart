@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_blog/blog/post.dart';
@@ -14,8 +15,6 @@ class BlogsPage extends StatefulWidget {
 
 class _BlogsPageState extends State<BlogsPage> {
   final TextEditingController _textController = TextEditingController();
-
-  String get _text => _textController.text;
 
   @override
   void initState() {
@@ -85,7 +84,10 @@ class _BlogsPageState extends State<BlogsPage> {
     return ListView.builder(itemBuilder: (context, index) {
       final post = posts[index];
       return ListTile(
-        title: Text(post.title),
+        title: Text(
+          post.title,
+          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+        ),
         subtitle: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -93,6 +95,15 @@ class _BlogsPageState extends State<BlogsPage> {
             Text('By ${post.username}',
                 style: TextStyle(fontWeight: FontWeight.bold)),
           ],
+        ),
+        trailing: CachedNetworkImage(
+          imageUrl: post.cover,
+          width: 80,
+          height: 80,
+          fit: BoxFit.cover,
+          errorWidget: (context, url, error) => Icon(Icons.error),
+          fadeOutDuration: Duration(seconds: 0),
+          fadeInDuration: Duration(seconds: 0),
         ),
         isThreeLine: true,
         onTap: () {
